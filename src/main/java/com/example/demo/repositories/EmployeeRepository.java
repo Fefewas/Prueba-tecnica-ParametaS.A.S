@@ -9,5 +9,3 @@ import com.example.demo.models.EmployeeModel;
 @Repository
 public interface EmployeeRepository extends CrudRepository<EmployeeModel, Long>{
 }
-int emeplo;
-//tutorial github
