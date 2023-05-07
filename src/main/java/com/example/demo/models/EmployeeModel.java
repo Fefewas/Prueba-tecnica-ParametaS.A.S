@@ -78,6 +78,11 @@ public class EmployeeModel {
     public void setSalario(double salario) {
         this.salario = salario;
     }
+    
+    public void setAge(int ageYears) {
+    }
+    public void setLongevity(int longevityYears) {
+    }
 
     //Este modelo de encarga de la creación de los getters y setters, además de la creación de las respectivas tablas que irán en la base de datos mysql
 

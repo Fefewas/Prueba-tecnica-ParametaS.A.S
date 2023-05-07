@@ -22,8 +22,14 @@ public class EmployeeService {
     public EmployeeModel safeEmployee(EmployeeModel employee){
         return employeeRepository.save(employee);
     }
-    public EmployeeModel getEmployeeDetails(LocalDate fechaVinculacion){
+    public EmployeeModel getEmployeeDetails(EmployeeModel employee){
         LocalDate fechaActual = LocalDate.now();
-        return Period.between(fechaVinculacion, fechaActual);
+        LocalDate fechaVinculacion = employee.getFechaVinculacion();
+        LocalDate fechaNacimiento = employee.getFechaNacimiento();
+        int ageYears = Period.between(fechaNacimiento, fechaActual).getYears();
+        int longevityYears = Period.between(fechaVinculacion, fechaActual).getYears();
+        employee.setAge(ageYears);
+        employee.setLongevity(longevityYears);
+        return employee;
     }
 }
