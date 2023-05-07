@@ -7,8 +7,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -20,9 +18,8 @@ import com.example.demo.services.EmployeeService;
 
 @RestController
 @RequestMapping("/employee")
-public class EmployeeController<fecha, Employee> {
+public class EmployeeController {
 
-    private static final String STRING = "";
     @Autowired
     EmployeeService employeeService;
 
@@ -33,39 +30,38 @@ public class EmployeeController<fecha, Employee> {
 
     @PostMapping
     public EmployeeModel safetEmployee(@RequestBody EmployeeModel employee){
-        return this.employeeService.safeEmployee(employee);
+        if (employee.getNombres().isEmpty() || employee.getApellidos().isEmpty() || 
+            employee.getTipoDocumento().isEmpty() || employee.getNumeroDocumento().isEmpty()) {
+            throw new IllegalArgumentException("Campos vacíos no permitidos");
+        }
+        else{
+            return this.employeeService.safeEmployee(employee);
+        }
     }
 
-    @PostMapping("/employees")
-    public ResponseEntity<Employee> Employeemodel(@Validated @RequestBody Employee employee) {
-        // Código para guardar el empleado en la base de datos
-        // ...
+    @PostMapping
+    public void checkAge(@RequestBody EmployeeModel employee) {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        try {
+            String dateString = sdf.format(employee.getFechaNacimiento());
+            Date date = new Date(sdf.parse(dateString).getTime());
+            Calendar fechaNacimiento = Calendar.getInstance();
+            fechaNacimiento.setTime(date);
+            Calendar now = Calendar.getInstance();
+            
+            int diff_years = now.get(Calendar.YEAR) - fechaNacimiento.get(Calendar.YEAR);
+            int diff_months = now.get(Calendar.MONTH) - fechaNacimiento.get(Calendar.MONTH);
+            int diff_days = now.get(Calendar.DAY_OF_MONTH) - fechaNacimiento.get(Calendar.DAY_OF_MONTH);
+            
+            if (diff_months < 0 || (diff_months == 0 && diff_days < 0)) {
+                diff_years--;
+            }
+            
+            if (diff_years < 18) {
+                throw new IllegalArgumentException("El empleado debe ser mayor de edad");
+            }
+        } catch (ParseException ex) {
+            // manejar la excepción
+        }
     }
-    
-    /**
-     *
-     */
-    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-    
-    try {
-        String fechaString;
-        Date fecha = (Date) sdf.parse(fechaString);
-    } catch (ParseException ex) {
-         // Fecha inválida, manejo del error
-    }
-    Calendar fechaNacimiento = Calendar.getInstance();
-    fechaNacimiento.setTime(employee.getFechaNacimiento());
-    Calendar ahora = Calendar.getInstance();
-    
-    int diff_anios = ahora.get(Calendar.YEAR) - fechaNacimiento.get(Calendar.YEAR);
-    int diff_meses = ahora.get(Calendar.MONTH) - fechaNacimiento.get(Calendar.MONTH);
-    int diff_dias = ahora.get(Calendar.DAY_OF_MONTH) - fechaNacimiento.get(Calendar.DAY_OF_MONTH);
-    
-    // Ajustar el cálculo de la edad si el mes y el día actual son menores que el mes y el día de nacimiento
-    if (diff_meses < 0 || (diff_meses == 0 && diff_dias < 0)) {
-        diff_anios--;
-    }
-    
-    if (diff_anios < 18) {
-     // El empleado no es mayor de edad, manejo del error
-    }
+}
