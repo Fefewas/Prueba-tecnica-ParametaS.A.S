@@ -45,14 +45,14 @@ public class EmployeeController<fecha, Employee> {
     /**
      *
      */
-    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-    
+    SimpleDateFormat sdf = new SimpleDateFormat ("dd/MM/yyyy");
     try {
         String fechaString;
         Date fecha = (Date) sdf.parse(fechaString);
-    } catch (ParseException ex) {
+    } catch (ParseException e) {
          // Fecha inválida, manejo del error
     }
+
     Calendar fechaNacimiento = Calendar.getInstance();
     fechaNacimiento.setTime(employee.getFechaNacimiento());
     Calendar ahora = Calendar.getInstance();
@@ -66,6 +66,9 @@ public class EmployeeController<fecha, Employee> {
         diff_anios--;
     }
     
-    if (diff_anios < 18) {
+    if (diff_anios < 18); {
      // El empleado no es mayor de edad, manejo del error
+
     }
+}
+}
