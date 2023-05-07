@@ -1,5 +1,7 @@
 package com.example.demo.services;
 
+import java.time.LocalDate;
+import java.time.Period;
 import java.util.ArrayList;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,5 +21,9 @@ public class EmployeeService {
 
     public EmployeeModel safeEmployee(EmployeeModel employee){
         return employeeRepository.save(employee);
+    }
+    public EmployeeModel getEmployeeDetails(LocalDate fechaVinculacion){
+        LocalDate fechaActual = LocalDate.now();
+        return Period.between(fechaVinculacion, fechaActual);
     }
 }
