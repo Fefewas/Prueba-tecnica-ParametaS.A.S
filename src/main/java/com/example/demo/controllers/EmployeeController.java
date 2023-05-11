@@ -29,18 +29,18 @@ public class EmployeeController {
     }
 
     @PostMapping
-    public EmployeeModel safetEmployee(@RequestBody EmployeeModel employee){
+    public EmployeeModel safeEmployee(@RequestBody EmployeeModel employee){
         if (employee.getNombres().isEmpty() || employee.getApellidos().isEmpty() || 
             employee.getTipoDocumento().isEmpty() || employee.getNumeroDocumento().isEmpty()) {
             throw new IllegalArgumentException("Campos vacíos no permitidos");
         }
         else{
-            return this.employeeService.safeEmployee(employee);
+            checkAge(employee);
+            return employeeService.safeEmployee(employee);
         }
     }
-
-    @PostMapping
-    public void checkAge(@RequestBody EmployeeModel employee) {
+    
+    private void checkAge(EmployeeModel employee) {
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         try {
             String dateString = sdf.format(employee.getFechaNacimiento());
@@ -48,15 +48,15 @@ public class EmployeeController {
             Calendar fechaNacimiento = Calendar.getInstance();
             fechaNacimiento.setTime(date);
             Calendar now = Calendar.getInstance();
-            
+
             int diff_years = now.get(Calendar.YEAR) - fechaNacimiento.get(Calendar.YEAR);
             int diff_months = now.get(Calendar.MONTH) - fechaNacimiento.get(Calendar.MONTH);
             int diff_days = now.get(Calendar.DAY_OF_MONTH) - fechaNacimiento.get(Calendar.DAY_OF_MONTH);
-            
+
             if (diff_months < 0 || (diff_months == 0 && diff_days < 0)) {
                 diff_years--;
             }
-            
+
             if (diff_years < 18) {
                 throw new IllegalArgumentException("El empleado debe ser mayor de edad");
             }
@@ -65,3 +65,4 @@ public class EmployeeController {
         }
     }
 }
+
