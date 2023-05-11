@@ -2,6 +2,8 @@ package com.example.demo.models;
 
 import java.time.LocalDate;
 
+import com.fasterxml.jackson.databind.node.ObjectNode;
+
 import jakarta.persistence.*;
 
 @Entity
@@ -82,6 +84,8 @@ public class EmployeeModel {
     public void setAge(int ageYears) {
     }
     public void setLongevity(int longevityYears) {
+    }
+    public void setEmployeeDetails(ObjectNode json) {
     }
 
     //Este modelo de encarga de la creación de los getters y setters, además de la creación de las respectivas tablas que irán en la base de datos mysql

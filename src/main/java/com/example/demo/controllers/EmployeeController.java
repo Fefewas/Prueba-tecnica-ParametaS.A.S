@@ -28,10 +28,14 @@ public class EmployeeController {
         return employeeService.getEmployees();
     }
 
+    @GetMapping("/employeeDetails")
+    public ArrayList<EmployeeModel> getEmployeeDetails(){
+        return employeeService.getEmployeesDetails();
+    }
     @PostMapping
     public EmployeeModel safeEmployee(@RequestBody EmployeeModel employee){
         if (employee.getNombres().isEmpty() || employee.getApellidos().isEmpty() || 
-            employee.getTipoDocumento().isEmpty() || employee.getNumeroDocumento().isEmpty()) {
+            employee.getTipoDocumento().isEmpty() || employee.getNumeroDocumento().isEmpty() || employee.getCargo().isEmpty()) {
             throw new IllegalArgumentException("Campos vacíos no permitidos");
         }
         else{
