@@ -15,14 +15,21 @@ public class EmployeeModel {
     @Column(unique = true, nullable = false)
     private long id;
 
-
+    @Column(length = 60, nullable = false)
     private String nombres;
+    @Column(length = 60, nullable = false)
     private String apellidos;
+    @Column(length = 60, nullable = false)
     private String tipoDocumento;
+    @Column(length = 60, nullable = false)
     private String numeroDocumento;
-    private LocalDate fechaNacimiento;
+    @Column(length = 60, nullable = false)
+    public LocalDate fechaNacimiento;
+    @Column(length = 60, nullable = false)
     private LocalDate fechaVinculacion;
+    @Column(length = 60, nullable = false)
     private String cargo;
+    @Column(length = 60, nullable = false)
     private double salario;
 
 
@@ -80,14 +87,6 @@ public class EmployeeModel {
     public void setSalario(double salario) {
         this.salario = salario;
     }
-    
-    public void setAge(int ageYears) {
-    }
-    public void setLongevity(int longevityYears) {
-    }
-    public void setEmployeeDetails(ObjectNode json) {
-    }
-
     //Este modelo de encarga de la creación de los getters y setters, además de la creación de las respectivas tablas que irán en la base de datos mysql
 
 }
